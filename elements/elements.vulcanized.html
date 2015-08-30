@@ -18840,6 +18840,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       padding: 5px;
       width: 34px;
     }
+    @media only screen and (max-width: 480px) {
+      .icon-wrapper{
+        display: none;
+      }
+    }
     .header-text-wrapper ::content > *{
       text-transform: uppercase;
       margin-left: 15px;
@@ -18934,6 +18939,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       /*position: absolute !important;*/
       min-width: 350px;
       min-height: 350px;
+    }
+
+    @media only screen and (max-width: 480px) {
+      paper-dialog {
+        min-height: 430px;
+      }
     }
   </style>
   <template>
