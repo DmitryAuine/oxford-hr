@@ -18833,17 +18833,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       display: flex;
       align-items: center;
     }
-    .icon-wrapper{
+    .header .icon-wrapper{
       color: white;
       background-color: var(--color);
       border-radius: 300px;
       padding: 5px;
-      width: 34px;
-    }
-    @media only screen and (max-width: 480px) {
-      .icon-wrapper{
-        display: none;
-      }
     }
     .header-text-wrapper ::content > *{
       text-transform: uppercase;
@@ -18906,9 +18900,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     @apply(--paper-font-title);
     }
     .year{
+      flex: 1;
     }
     .flex-container{
       display: flex;
+      flex-wrap: nowrap;
       align-items: center;
     }
     .flex-container2{
@@ -18940,12 +18936,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       min-width: 350px;
       min-height: 350px;
     }
-
-    @media only screen and (max-width: 480px) {
-      paper-dialog {
-        min-height: 430px;
-      }
-    }
   </style>
   <template>
     <year-validator></year-validator>
@@ -18973,7 +18963,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </template>
     </p>
     <div class="add-button-wrapper">
-      <paper-button raised="" id="add">Добавить</paper-button>
+      <paper-button raised="" on-click="openDialog">Добавить</paper-button>
     </div>
     <paper-dialog on-iron-overlay-closed="clearForm" id="dialog" entry-animation="scale-up-animation" exit-animation="scale-down-animation">
       <h2>[[header]]</h2>
@@ -19004,7 +18994,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer({
       is: 'data-section',
       listeners: {
-        'add.tap': 'openDialog',
         'addSubmit.tap': 'addNewItem'
       },
       properties: {
