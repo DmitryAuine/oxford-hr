@@ -18956,7 +18956,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <h1>{{item.title}}</h1>
         </div>
         <div style="float: right;">
-          <paper-menu-button id="actions" horizontal-offset="-100">
+          <paper-menu-button class="actions" horizontal-offset="-100">
             <paper-icon-button icon="menu" class="dropdown-trigger"></paper-icon-button>
             <div class="dropdown-content">
               <paper-item on-tap="edit">Редактировать</paper-item>
@@ -19051,7 +19051,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
       edit: function(e){
-        Polymer.dom(e.target).parentNode.parentNode.close(); // i don't like it
+        Polymer.dom(this.root).querySelectorAll('.actions').forEach(function(elm){
+          elm.close();
+        }); // i don't like it
         this.nowEditing = this.items.indexOf(e.model.item);
         this.populateForm(e.model.item);
         this.openDialog();
