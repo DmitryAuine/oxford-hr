@@ -5,14 +5,21 @@
       --border-color: grey;
     }
     .header{
-      display: flex;
-      align-items: center;
+      /*display: flex;*/
+      /*align-items: center;*/
+    }
+    .inline-tube{
+      /*flex-grow: 2;*/
+      background-color: var(--color);
+      margin-left: 10px;
+      height: 20px;
     }
     .header .icon-wrapper{
       color: white;
       background-color: var(--color);
       border-radius: 300px;
       padding: 5px;
+      width: 34px;
     }
     .header-text-wrapper ::content > *{
       text-transform: uppercase;
@@ -21,12 +28,7 @@
       color: var(--color);
       font-weight: 300;
     }
-    .inline-tube{
-      flex-grow: 2;
-      background-color: var(--color);
-      margin-left: 10px;
-      height: 20px;
-    }
+
     .content ::content > *{
       padding-left: 55px;
       padding-bottom: 35px;
@@ -39,14 +41,17 @@
   </style>
   <template>
     <div class="header">
-      <div class="icon-wrapper">
-        <content select="iron-icon"></content>
+      <div class="layout horizontal center">
+        <div class="icon-wrapper">
+          <content select="iron-icon"></content>
+        </div>
+        <div class="header-text-wrapper">
+          <content select=".section-header"></content>
+        </div>
+        <div class="inline-tube flex-2"></div>
       </div>
-      <div class="header-text-wrapper">
-        <content select=".section-header"></content>
-      </div>
-      <div class="inline-tube"></div>
     </div>
+
     <div class="content">
       <content select=".section-content"></content>
     </div>
