@@ -10,6 +10,7 @@
             border-right-color: #E91E63;
             border-bottom-color: #3F51B5;
             overflow: hidden;
+            margin: auto;
         }
         .ava-center iron-image{
             left: -50%;
@@ -53,12 +54,12 @@
         }
     </style>
     <template>
+        <p>
+            <div class="ava">
+                <iron-image on-tap="openDialog" id="ava" sizing="contain" src="../../images/avatest.jpg"></iron-image>
+            </div>
+        </p>
         <div style="text-align: center">
-            <p>
-                <div class="ava">
-                    <iron-image on-tap="openDialog" id="ava" sizing="cover" src="../../images/avatest.jpg"></iron-image>
-                </div>
-            </p>
             <paper-button on-tap="openDialog"><iron-icon icon="icons:file-upload"></iron-icon>Загрузить</paper-button>
         </div>
         <paper-dialog modal
@@ -68,9 +69,9 @@
             <h2>Отцентрировать изображение</h2>
             <div style="text-align: center">
                 <p>
-                    <div class="ava-center">
-                        <iron-image id="avaCenter" sizing="cover" src="../../images/avatest.jpg"></iron-image>
-                    </div>
+                <div class="ava-center">
+                    <iron-image id="avaCenter" sizing="contain" src="../../images/avatest.jpg"></iron-image>
+                </div>
                 </p>
             </div>
             <div class="buttons">
