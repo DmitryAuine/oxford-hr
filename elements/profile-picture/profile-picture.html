@@ -1,37 +1,83 @@
 <dom-module id="profile-picture">
     <style>
-        iron-image{
+        .ava, .ava-center{
             width: 250px;
             height: 250px;
             border-radius: 100%;
-            border: solid 1px;
+            border: solid 4px;
             border-left-color: #8BC34A;
             border-top-color: #FFC107;
             border-right-color: #E91E63;
             border-bottom-color: #3F51B5;
+            overflow: hidden;
+        }
+        .ava-center iron-image{
+            left: -50%;
+            top: -50%;
+            width: 500px;
+            height: 500px;
+            border-radius: 100%;
+        }
+        .ava{
+            cursor: pointer;
+        }
+        .ava iron-image{
+            position: relative;
+        }
+        iron-image.changed{
+            width: 500px;
+            height: 500px;
+            border-radius: 100%;
+        }
+        iron-image{
+            width: 250px;
+            height: 250px;
+            position: relative;
         }
         input{
             opacity: 0;
         }
-        iron-image{
-            cursor: pointer;
-            width: 250px;
-            height: 250px;
-        }
         @media (max-width: 1200px) {
-            iron-image{
+            .ava{
                 width: 200px;
                 height: 200px;
             }
+            .ava iron-image:not(.changed){
+                width: 200px;
+                height: 200px;
+            }
+        }
+        paper-dialog{
+            min-width: 400px;
+            min-height: 400px;
         }
     </style>
     <template>
         <div style="text-align: center">
             <p>
-                <iron-image on-tap="openDialog" id="ava" sizing="cover" src="../../images/avatest.jpg"></iron-image>
+                <div class="ava">
+                    <iron-image on-tap="openDialog" id="ava" sizing="cover" src="../../images/avatest.jpg"></iron-image>
+                </div>
             </p>
             <paper-button on-tap="openDialog"><iron-icon icon="icons:file-upload"></iron-icon>Загрузить</paper-button>
         </div>
+        <paper-dialog modal
+                      id="dialog"
+                      on-iron-overlay-closed="resetAva"
+                      entry-animation="scale-up-animation" exit-animation="scale-down-animation">
+            <h2>Отцентрировать изображение</h2>
+            <div style="text-align: center">
+                <p>
+                    <div class="ava-center">
+                        <iron-image id="avaCenter" sizing="cover" src="../../images/avatest.jpg"></iron-image>
+                    </div>
+                </p>
+            </div>
+            <div class="buttons">
+                <paper-button dialog-dismiss>Отмета</paper-button>
+                <paper-button on-click="setAva">Применить</paper-button>
+            </div>
+        </paper-dialog>
         <input is="iron-input" id="file" type="file"/>
     </template>
 </dom-module>
@@ -42,6 +88,9 @@
             listeners: {
                 'file.change': 'onFileChange'
             },
+            ready: function(){
+                $(this.$.avaCenter).draggable();
+            },
             openDialog: function(){
                 this.$.file.click();
             },
@@ -50,13 +99,30 @@
                     var reader = new FileReader();
 
                     reader.onload = function (e) {
-                        this.$.ava.src = e.target.result;
+                        this.$.dialog.open();
+//                        this.$.ava.src = e.target.result;
+                        this.$.avaCenter.src = e.target.result;
                     }.bind(this);
 
                     reader.readAsDataURL(this.$.file.files[0]);
 
                     this.file = this.$.file.files[0];
                 }
+            },
+            resetAva: function(){
+                this.$.avaCenter.style.left = '-50%';
+                this.$.avaCenter.style.top = '-50%';
+            },
+            setAva: function(){
+                console.log(this.$.avaCenter.style.left);
+                this.$.ava.src = this.$.avaCenter.src;
+                this.$.ava.style.left = this.$.avaCenter.style.left;
+                this.$.ava.style.top = this.$.avaCenter.style.top;
+                $(this.$.ava).addClass('changed');
+
+                this.updateStyles();
+
+                this.$.dialog.close();
             }
         });
     })();

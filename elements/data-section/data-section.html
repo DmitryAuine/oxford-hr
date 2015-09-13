@@ -7,33 +7,24 @@
       --paper-dialog-background-color: white;
     }
 
-    h1{
-    @apply(--paper-font-title);
+    h1, .example ::content h1{
+      @apply(--paper-font-title);
     }
-    .year{
-      flex: 1;
+    .year-delimiter, .example ::content .year-delimiter{
+      margin: 0px 20px;
     }
-    .flex-container{
-      display: flex;
-      flex-wrap: nowrap;
-      align-items: center;
-    }
-    .flex-container2{
-      display: flex;
-      flex-wrap: wrap;
-    }
-    .flex-container2 *{
-      flex-grow: 1;
-    }
-    .description{
-      color: var(--secondary-text-color);
-    }
-    .flex-container2 :nth-child(1){
-      flex-basis: 120px;
-      color: var(--secondary-text-color);
-    }
-    .flex-container2 :nth-child(2){
+    .description, .example ::content .description{
       flex-basis: 450px;
+      color: var(--secondary-text-color);
+    }
+
+    .example ::content{
+      color: var(--disabled-text-color) !important;
+    }
+
+    .items-years, .example ::content .items-years{
+      flex-basis: 120px;
+      margin-right: 10px;
     }
     .add-button-wrapper{
       text-align: right;
@@ -42,42 +33,57 @@
       background: #4285f4;
       color: #fff;
     }
+    .action-bottons{
+      float: right;
+    }
     paper-dialog{
       /*position: absolute !important;*/
       min-width: 350px;
       min-height: 350px;
     }
+    .item-title{
+      float: left;
+      max-width: 350px;
+      word-wrap: break-word;
+    }
+
+    @media (max-width: 565px) {
+      .action-bottons{
+        display: none;
+      }
+    }
   </style>
   <template>
     <year-validator></year-validator>
     <title-validator></title-validator>
+    <p class="example">
+      <content select=".example">
+
+      </content>
+    </p>
     <p>
       <template is="dom-repeat" items="[[items]]">
-        <div style="float: left">
-          <h1>{{item.title}}</h1>
+        <div class="item-title">
+          <h1>[[item.title]]</h1>
         </div>
-        <div style="float: right;">
-          <paper-menu-button class="actions" horizontal-offset="-100">
-            <paper-icon-button icon="menu" class="dropdown-trigger"></paper-icon-button>
-            <div class="dropdown-content">
-              <paper-item on-tap="edit">Редактировать</paper-item>
-              <paper-item on-tap="remove">Удалить</paper-item>
-            </div>
-          </paper-menu-button>
+        <div class="action-bottons">
+          <paper-icon-button title="Редактировать" icon="icons:create" on-click="edit"></paper-icon-button>
+          <paper-icon-button title="Удалить" icon="icons:remove" on-click="remove"></paper-icon-button>
         </div>
         <div style="clear: both"></div>
-        <div class="flex-container2">
-          <div><span>{{item.yearFrom}}</span> - <span>{{item.yearTo}}</span></div>
-          <div class="description">{{item.description}}</div>
-        </div>
+        <div class="layout horizontal">
+          <div class="items-years"><span>[[item.yearFrom]]</span> - <span>[[item.yearTo]]</span></div>
+          <div class="description">[[item.description]]</div>
         </div>
       </template>
     </p>
     <div class="add-button-wrapper">
       <paper-button raised on-click="openDialog">Добавить</paper-button>
     </div>
-    <paper-dialog on-iron-overlay-closed="clearForm"
-                  id="dialog" entry-animation="scale-up-animation" exit-animation="scale-down-animation">
+    <paper-dialog modal
+            on-iron-overlay-closed="clearForm"
+            id="dialog"
+            entry-animation="scale-up-animation" exit-animation="scale-down-animation">
       <h2>[[header]]</h2>
 
       <form is="iron-form" id="form">
@@ -86,35 +92,31 @@
                      required
                      onfocusout="validate()"
                      maxlength="45"
-                     label="Название"
+                     label="[[title]]"
                      validator="title-validator"
                      error-message="Неверное название">
         </paper-input>
         <br/>
-        <div class="flex-container">
+        <div class="layout horizontal center">
           <paper-input name="yearFrom"
                        value="{{formData.yearFrom}}"
-                       required
                        onfocusout="validate()"
-                       class="year"
-                       label="Год"
+                       class=""
+                       label="[[yearFrom]]"
                        prevent-invalid-input
                        allowed-pattern="[0-9]"
                        maxlength="4"
-                       validator="year-validator"
                        error-message="Неверное значение">
           </paper-input>
-          <span style="margin: 0px 20px">-</span>
+          <span class="year-delimiter">-</span>
           <paper-input name="yearTo"
                        value="{{formData.yearTo}}"
-                       required
                        onfocusout="validate()"
-                       class="year"
-                       label="Год"
+                       class=""
+                       label="[[yearTo]]"
                        prevent-invalid-input
                        allowed-pattern="[0-9]"
                        maxlength="4"
-                       validator="year-validator"
                        error-message="Неверное значение">
           </paper-input>
         </div>
@@ -141,6 +143,18 @@
         header: {
           type: String,
           value: "Заголовок"
+        },
+        title: {
+          type: String,
+          value: 'Название'
+        },
+        yearFrom: {
+          type: String,
+          value: "Год"
+        },
+        yearTo: {
+          type: String,
+          value: "Год"
         },
         dataId: String,
         items: {
